@@ -17,7 +17,8 @@ jobs:
         uses: jacobtomlinson/gha-find-replace@v2
         id: update-version-solution-fjord
         with:
-          find: "oyriimagerepo:${{ github.event.inputs.image-name }}:\\d{4}-\\d{2}-\\d{2}-\\d{2}-\\d{2}-\\w{8}$"
+          #find: "oyriimagerepo:${{ github.event.inputs.image-name }}:\\d{4}-\\d{2}-\\d{2}-\\d{2}-\\d{2}-\\w{8}$"
+          find: "oyriimagerepo:${{ github.event.inputs.image-name }}:\\d{4}-\\d{2}-\\d{2}-\\d{2}-\\d{2}-\\w{8}"
           replace: "oyriimagerepo:${{ github.event.inputs.image-name }}:${{ github.event.inputs.image-version }}"
           include: "solution-fjord/**"
           regex: true
@@ -27,9 +28,9 @@ jobs:
         uses: jacobtomlinson/gha-find-replace@v2
         id: update-version-solution-mountain
         with:
-          find: "oyriimagerepo:${{ github.event.inputs.image-name }}:.*$"
+          find: "oyriimagerepo:${{ github.event.inputs.image-name }}:.*"
           replace: "oyriimagerepo:${{ github.event.inputs.image-name }}:${{ github.event.inputs.image-version }}"
-          include: "solution-mountain/*.yaml"
+          include: "solution-mountain/**"
           regex: true
       - name: Log version update in solution-mountain
         run: echo "The selected version is ${{ steps.update-version-solution-mountain.outputs.modifiedFiles }}"   
