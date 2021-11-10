@@ -1,0 +1,29 @@
+name: Testing replace image version in config file
+on:
+  workflow_dispatch:
+   inputs:
+      image-version:
+        description: 'New image version'
+        required: true
+      image-name:
+        description: 'Image to update'
+        required: true        
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Find and replace image version in solution-fjord
+        uses: jacobtomlinson/gha-find-replace@v2
+        with:
+          find: "oyriimagerepo:${{ inputs.image-name }}:20*"
+          replace: "oyriimagerepo:${{ inputs.image-name }}:${{ inputs.image-version }}"
+          include: "solution-fjord/**.yaml"
+          regex: true
+      - name: Find and replace image version in solution-mountain
+        uses: jacobtomlinson/gha-find-replace@v2
+        with:
+          find: "oyriimagerepo:${{ inputs.image-name }}:20*"
+          replace: "oyriimagerepo:${{ inputs.image-name }}:${{ inputs.image-version }}"
+          include: "solution-mountain/**.yaml"
+          regex: true    
