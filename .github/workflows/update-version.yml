@@ -50,4 +50,4 @@ jobs:
 #           find: "oyriimagerepo:${{ inputs.image-name }}:20*"
 #           replace: "oyriimagerepo:${{ inputs.image-name }}:${{ inputs.image-version }}"
 #           include: "solution-mountain/**.yaml"
-          regex: true    
+#          regex: true    
