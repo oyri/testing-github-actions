@@ -17,37 +17,34 @@ jobs:
         uses: jacobtomlinson/gha-find-replace@v2
         id: update-version-solution-fjord
         with:
-          find: "oyriimagerepo:${{ inputs.image-name }}:202"
-          replace: "oyriimagerepo:${{ inputs.image-name }}:${{ inputs.image-version }}"
+          find: "oyriimagerepo:app1:202"
+          replace: "oyriimagerepo:app1:2021-11-10-randi-randi"
           include: "solution-fjord/**"
           regex: false
       - name: Log version update in solution-fjord
         run: echo "The selected version is ${{ steps.update-version-solution-fjord.outputs.modifiedFiles }}"          
-      - name: Find and replace image version in solution-mountain
-        uses: jacobtomlinson/gha-find-replace@v2
-        id: update-version-solution-mountain
-        with:
-          find: "oyriimagerepo:${{ inputs.image-name }}:202"
-          replace: "oyriimagerepo:${{ inputs.image-name }}:${{ inputs.image-version }}"
-          include: "solution-mountain/**"
-          regex: false
-      - name: Log version update in solution-mountain
-        run: echo "The selected version is ${{ steps.update-version-solution-mountain.outputs.modifiedFiles }}"            
+         
 #   build:
 #     runs-on: ubuntu-latest
 #     steps:
 #       - uses: actions/checkout@v2
 #       - name: Find and replace image version in solution-fjord
 #         uses: jacobtomlinson/gha-find-replace@v2
+#         id: update-version-solution-fjord
 #         with:
 #           find: "oyriimagerepo:${{ inputs.image-name }}:20*"
 #           replace: "oyriimagerepo:${{ inputs.image-name }}:${{ inputs.image-version }}"
 #           include: "solution-fjord/**.yaml"
 #           regex: true
+#       - name: Log version update in solution-fjord
+#         run: echo "The selected version is ${{ steps.update-version-solution-fjord.outputs.modifiedFiles }}"    
 #       - name: Find and replace image version in solution-mountain
 #         uses: jacobtomlinson/gha-find-replace@v2
+#         id: update-version-solution-mountain
 #         with:
 #           find: "oyriimagerepo:${{ inputs.image-name }}:20*"
 #           replace: "oyriimagerepo:${{ inputs.image-name }}:${{ inputs.image-version }}"
 #           include: "solution-mountain/**.yaml"
-#          regex: true    
+#          regex: true
+#       - name: Log version update in solution-mountain
+#         run: echo "The selected version is ${{ steps.update-version-solution-mountain.outputs.modifiedFiles }}"    
