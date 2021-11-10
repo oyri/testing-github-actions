@@ -1,2 +1,2 @@
 # testing-github-actions
-Experiment with Github Actions
+Experimenting with Github Actions
