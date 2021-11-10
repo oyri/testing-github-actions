@@ -17,12 +17,21 @@ jobs:
         uses: jacobtomlinson/gha-find-replace@v2
         id: update-version-solution-fjord
         with:
-          find: "oyriimagerepo:app1:202"
+          find: "oyriimagerepo:app1:202*"
           replace: "oyriimagerepo:app1:2021-11-10-randi-randi"
           include: "solution-fjord/**"
-          regex: false
+          regex: true
       - name: Log version update in solution-fjord
-        run: echo "The selected version is ${{ steps.update-version-solution-fjord.outputs.modifiedFiles }}"          
+        run: echo "The selected version is ${{ steps.update-version-solution-fjord.outputs.modifiedFiles }}"
+      - name: create pull request
+        uses: peter-evans/create-pull-request@5e9d0ee9ea5ccf865a52a571cba827e4b52a1aff # pin@v3.8.0
+        with:
+          commit-message: "updating version of ${{ inputs.image-name }} to ${{ inputs.image-version }}"
+          branch: ${{ inputs.image-name }}-version-update
+          delete-branch: true
+          branch-suffix: random
+          title: "updating version of ${{ inputs.image-name }} to ${{ inputs.image-version }}"
+          body: "automated pull-request"        
          
 #   build:
 #     runs-on: ubuntu-latest
