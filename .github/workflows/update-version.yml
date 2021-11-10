@@ -9,7 +9,7 @@ on:
         description: 'Image to update'
         required: true        
 jobs:
-  build-simple:
+  update-version:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -17,12 +17,22 @@ jobs:
         uses: jacobtomlinson/gha-find-replace@v2
         id: update-version-solution-fjord
         with:
-          find: "oyriimagerepo:${{ github.event.inputs.image-name }}:202*"
+          find: "oyriimagerepo:${{ github.event.inputs.image-name }}:\\d{4}-\\d{2}-\\d{2}-*$"
           replace: "oyriimagerepo:${{ github.event.inputs.image-name }}:${{ github.event.inputs.image-version }}"
           include: "solution-fjord/**"
           regex: true
       - name: Log version update in solution-fjord
         run: echo "The selected version is ${{ steps.update-version-solution-fjord.outputs.modifiedFiles }}"
+      - name: Find and replace image version in solution-mountain
+        uses: jacobtomlinson/gha-find-replace@v2
+        id: update-version-solution-mountain
+        with:
+          find: "oyriimagerepo:${{ github.event.inputs.image-name }}:\\d{4}-\\d{2}-\\d{2}-*$"
+          replace: "oyriimagerepo:${{ github.event.inputs.image-name }}:${{ github.event.inputs.image-version }}"
+          include: "solution-mountain/*.yaml"
+          regex: true
+      - name: Log version update in solution-mountain
+        run: echo "The selected version is ${{ steps.update-version-solution-mountain.outputs.modifiedFiles }}"   
       - name: create pull request
         uses: peter-evans/create-pull-request@5e9d0ee9ea5ccf865a52a571cba827e4b52a1aff # pin@v3.8.0
         with:
@@ -31,29 +41,4 @@ jobs:
           delete-branch: true
           branch-suffix: random
           title: "updating version of ${{ github.event.inputs.image-name }} to ${{ github.event.inputs.image-version }}"
-          body: "automated pull-request"        
-         
-#   build:
-#     runs-on: ubuntu-latest
-#     steps:
-#       - uses: actions/checkout@v2
-#       - name: Find and replace image version in solution-fjord
-#         uses: jacobtomlinson/gha-find-replace@v2
-#         id: update-version-solution-fjord
-#         with:
-#           find: "oyriimagerepo:${{ github.event.inputs.image-name }}:20*"
-#           replace: "oyriimagerepo:${{ github.event.inputs.image-name }}:${{ github.event.inputs.image-version }}"
-#           include: "solution-fjord/**.yaml"
-#           regex: true
-#       - name: Log version update in solution-fjord
-#         run: echo "The selected version is ${{ steps.update-version-solution-fjord.outputs.modifiedFiles }}"    
-#       - name: Find and replace image version in solution-mountain
-#         uses: jacobtomlinson/gha-find-replace@v2
-#         id: update-version-solution-mountain
-#         with:
-#           find: "oyriimagerepo:${{ github.event.inputs.image-name }}:20*"
-#           replace: "oyriimagerepo:${{ github.event.inputs.image-name }}:${{ github.event.inputs.image-version }}"
-#           include: "solution-mountain/**.yaml"
-#          regex: true
-#       - name: Log version update in solution-mountain
-#         run: echo "The selected version is ${{ steps.update-version-solution-mountain.outputs.modifiedFiles }}"    
+          body: "automated pull-request"
