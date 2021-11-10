@@ -17,8 +17,8 @@ jobs:
         uses: jacobtomlinson/gha-find-replace@v2
         id: update-version-solution-fjord
         with:
-          find: "oyriimagerepo:app1:202*"
-          replace: "oyriimagerepo:app1:2021-11-10-randi-randi"
+          find: "oyriimagerepo:${{ github.event.inputs.image-name }}:202*"
+          replace: "oyriimagerepo:${{ github.event.inputs.image-name }}:${{ github.event.inputs.image-version }}"
           include: "solution-fjord/**"
           regex: true
       - name: Log version update in solution-fjord
@@ -26,11 +26,11 @@ jobs:
       - name: create pull request
         uses: peter-evans/create-pull-request@5e9d0ee9ea5ccf865a52a571cba827e4b52a1aff # pin@v3.8.0
         with:
-          commit-message: "updating version of ${{ inputs.image-name }} to ${{ inputs.image-version }}"
-          branch: ${{ inputs.image-name }}-version-update
+          commit-message: "updating version of ${{ github.event.inputs.image-name }} to ${{ github.event.inputs.image-version }}"
+          branch: ${{ github.event.inputs.image-name }}-version-update
           delete-branch: true
           branch-suffix: random
-          title: "updating version of ${{ inputs.image-name }} to ${{ inputs.image-version }}"
+          title: "updating version of ${{ github.event.inputs.image-name }} to ${{ github.event.inputs.image-version }}"
           body: "automated pull-request"        
          
 #   build:
@@ -41,8 +41,8 @@ jobs:
 #         uses: jacobtomlinson/gha-find-replace@v2
 #         id: update-version-solution-fjord
 #         with:
-#           find: "oyriimagerepo:${{ inputs.image-name }}:20*"
-#           replace: "oyriimagerepo:${{ inputs.image-name }}:${{ inputs.image-version }}"
+#           find: "oyriimagerepo:${{ github.event.inputs.image-name }}:20*"
+#           replace: "oyriimagerepo:${{ github.event.inputs.image-name }}:${{ github.event.inputs.image-version }}"
 #           include: "solution-fjord/**.yaml"
 #           regex: true
 #       - name: Log version update in solution-fjord
@@ -51,8 +51,8 @@ jobs:
 #         uses: jacobtomlinson/gha-find-replace@v2
 #         id: update-version-solution-mountain
 #         with:
-#           find: "oyriimagerepo:${{ inputs.image-name }}:20*"
-#           replace: "oyriimagerepo:${{ inputs.image-name }}:${{ inputs.image-version }}"
+#           find: "oyriimagerepo:${{ github.event.inputs.image-name }}:20*"
+#           replace: "oyriimagerepo:${{ github.event.inputs.image-name }}:${{ github.event.inputs.image-version }}"
 #           include: "solution-mountain/**.yaml"
 #          regex: true
 #       - name: Log version update in solution-mountain
