@@ -21,15 +21,16 @@ jobs:
       - run: echo "Found jira id from branch ${{github.event.pull_request.head.ref}}. jira id is ${{ steps.regex-match.outputs.group1 }}"
       - uses: octokit/request-action@v2.x
         id: update_title
+        if: ${{steps.regex-match.outputs.group1}} != ""
         with:
           route: PATCH /repos/{repo}/pulls/{pull_number}
           repo: ${{ github.repository }}
           pull_number: ${{ github.event.number }}
-          title: ${{ steps.regex-match.outputs.group1 }} |#${{ github.event.number }}|${{ github.event.pull_request.title }}
+          title: ${{ steps.regex-match.outputs.group1 }} |${{ github.event.pull_request.title }}
 #          output: | # The | is significant!
 #            title: ${{ steps.regex-match.outputs.group1 }} |${{ github.event.number }}|${{ github.event.pull_request.title }}
 #            body: "Standard pull request title"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - run: echo "Logging pull request data ${{ steps.update_title.outputs.data }}"
+#      - run: echo "Logging pull request data ${{ steps.update_title.outputs.data }}"
       - run: echo "Update pull request title finished with status ${{ steps.update_title.outputs.status }}"
