@@ -45,10 +45,11 @@ jobs:
           route: PATCH /repos/{repo}/pulls/{pull_number}
           repo: ${{ github.repository }}
           pull_number: ${{ github.event.number }}
-          title: 'Randi'
-          output: | # The | is significant!
-            title: ${{ steps.regex-match.outputs.group1 }} |${{ github.event.number }}|${{ github.event.pull_request.title }}
-            body: "Standard pull request title"
+          title: ${{ steps.regex-match.outputs.group1 }} |${{ github.event.number }}|${{ github.event.pull_request.title }}
+          body: 'Standard pull request title'
+#          output: | # The | is significant!
+#            title: ${{ steps.regex-match.outputs.group1 }} |${{ github.event.number }}|${{ github.event.pull_request.title }}
+#            body: "Standard pull request title"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - run: echo "Description data ${{ steps.update_description.outputs.data }}"
