@@ -4,10 +4,12 @@
 name: Get jira-id from branch name
 
 on:
-  push:
-    branches:
-      - '**'      # matches every branch
-      - '!main'   # excludes main
+  pull_request:
+    branches: [ main ]
+#  push:
+#    branches:
+#      - '**'      # matches every branch
+#      - '!main'   # excludes main
 
 jobs:
   findIssueId:
@@ -31,31 +33,19 @@ jobs:
         run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
         id: extract_branch
       - uses: actions-ecosystem/action-regex-match@v2
-        id: regex-match-simple
-        with:
-          text: ${{ steps.extract_branch.outputs.branch }}
-          regex: '(.+)?'
-      - run: echo " ${{ steps.extract_branch.outputs.branch }} match jira id ${{ steps.regex-match-simple.outputs.group1 }}"
-      - uses: actions-ecosystem/action-regex-match@v2
-        id: regex-match-simple2
-        with:
-          text: ${{ steps.extract_branch.outputs.branch }}
-          regex: 'work\/([\w]+-[\d]+)?.*'
-      - run: echo "match jira id ${{ steps.regex-match-simple2.outputs.group1 }}"          
-      - uses: actions-ecosystem/action-regex-match@v2
         id: regex-match
         with:
           text: ${{ steps.extract_branch.outputs.branch }}
           regex: 'work\/([\w]+-[\d]+)?.*'
-      - run: echo "match jira id ${{ steps.regex-match.outputs.group1 }}"
-#      - uses: octokit/request-action@v2.x
-#        id: update_description
-#        with:
-#          route: PATCH /repos/{repo}/pulls/{pull_number}
-#          repo: ${{ github.repository }}
-#          pull_number: ${{ github.event.number }}
-#          output: | # The | is significant!
-#            title: ${{env.VERSION}}| ${{ github.head_ref }} |${{ github.event.number }}|${{ github.event.pull_request.title }}
-#            body: "crappy"
-#        env:
-#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - run: echo "Found jira id from branch ${{ steps.extract_branch.outputs.branch }}. jira id is ${{ steps.regex-match.outputs.group1 }}"
+      - uses: octokit/request-action@v2.x
+        id: update_description
+        with:
+          route: PATCH /repos/{repo}/pulls/{pull_number}
+          repo: ${{ github.repository }}
+          pull_number: ${{ github.event.number }}
+          output: | # The | is significant!
+            title: ${{ steps.regex-match.outputs.group1 }} |${{ github.event.number }}|${{ github.event.pull_request.title }}
+            body: "Standard pull request title"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
