@@ -25,23 +25,27 @@ jobs:
 #          pull_number: ${{ github.event.number }}
 #        env:
 #          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - run: echo "branch  ${GITHUB_REF} - ${GITHUB_REF##*/}"
+      - run: echo "branch  ${GITHUB_REF} - ${GITHUB_REF##*/} - ${GITHUB_REF#refs/heads/}"
+      - name: Extract branch name
+        shell: bash
+        run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
+        id: extract_branch
       - uses: actions-ecosystem/action-regex-match@v2
         id: regex-match-simple
         with:
-          text: ${GITHUB_REF##*/}
+          text: ${{ steps.extract_branch.outputs.branch }}
           regex: '(.+)?'
       - run: echo " ${GITHUB_REF##*/} match jira id ${{ steps.regex-match-simple.outputs.group1 }}"      
       - uses: actions-ecosystem/action-regex-match@v2
         id: regex-match-simple2
         with:
-          text: ${GITHUB_REF##*/}
+          text: ${{ steps.extract_branch.outputs.branch }}
           regex: '([\w]+-[\d]+)?.*'
       - run: echo "match jira id ${{ steps.regex-match-simple2.outputs.group1 }}"          
       - uses: actions-ecosystem/action-regex-match@v2
         id: regex-match
         with:
-          text: ${GITHUB_REF}
+          text: ${{ steps.extract_branch.outputs.branch }}
           regex: 'refs\/heads\/work\/([\w]+-[\d]+)?.*'
       - run: echo "match jira id ${{ steps.regex-match.outputs.group1 }}"
 #      - uses: octokit/request-action@v2.x
