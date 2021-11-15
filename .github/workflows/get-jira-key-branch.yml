@@ -50,3 +50,6 @@ jobs:
             body: "Standard pull request title"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - run: "Description data: ${{ steps.update_description.outputs.data }}"
+      - name: "update_description failed. Request failed with status ${{ steps.update_description.outputs.status }}
+        if: ${{ failure() }}
