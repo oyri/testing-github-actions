@@ -13,10 +13,10 @@ jobs:
   findIssueId:
     runs-on: ubuntu-latest
     steps:
-      - name: print need variables
-        env:
-          PULL_REQ_NO: ${{ toJSON(github.event.number) }}
-        run: echo "pull-req-no $PULL_REQ_NO |repo $GITHUB_REPOSITORY |branch ${GITHUB_HEAD_REF}| ${{ fromJson(github.event.number) }}"
+#      - name: print need variables
+#        env:
+#          PULL_REQ_NO: ${{ toJSON(github.event.number) }}
+#        run: echo "pull-req-no $PULL_REQ_NO |repo $GITHUB_REPOSITORY |branch ${GITHUB_HEAD_REF}| ${{ fromJson(github.event.number) }}"
 #      - uses: octokit/request-action@v2.x
 #        id: list_commits
 #        with:
