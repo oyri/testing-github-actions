@@ -45,8 +45,7 @@ jobs:
           route: PATCH /repos/{repo}/pulls/{pull_number}
           repo: ${{ github.repository }}
           pull_number: ${{ github.event.number }}
-          title: ${{ steps.regex-match.outputs.group1 }} |${{ github.event.number }}|${{ github.event.pull_request.title }}
-          body: 'Standard pull request title'
+          title: ${{ steps.regex-match.outputs.group1 }} |#${{ github.event.number }}|${{ github.event.pull_request.title }}
 #          output: | # The | is significant!
 #            title: ${{ steps.regex-match.outputs.group1 }} |${{ github.event.number }}|${{ github.event.pull_request.title }}
 #            body: "Standard pull request title"
