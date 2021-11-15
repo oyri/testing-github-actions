@@ -25,6 +25,7 @@ jobs:
 #          pull_number: ${{ github.event.number }}
 #        env:
 #          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - run: echo "branch  ${{ github.head_ref }}"
       - uses: actions-ecosystem/action-regex-match@v2
         id: regex-match
         with:
