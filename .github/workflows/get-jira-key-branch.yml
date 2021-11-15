@@ -1,0 +1,35 @@
+# This workflow will build a Java project with Maven
+# For more information see: https://help.github.com/actions/language-and-framework-guides/building-and-testing-java-with-maven
+
+name: Get jira-id from branch name
+
+on:
+  pull_request:
+    branches: [ main ]
+    types: [ opened ]
+
+jobs:
+  findIssueId:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "branch ${{github.event.pull_request.head.ref}} -BASE_REF ${{ github.base_ref }} -REF ${GITHUB_REF} -REF-hash ${GITHUB_REF##*/} -REF-refs/heads ${GITHUB_REF#refs/heads/}"
+      - uses: actions-ecosystem/action-regex-match@v2
+        id: regex-match
+        with:
+          text: ${{github.event.pull_request.head.ref}}
+          regex: 'work\/([\w]+-[\d]+)?.*'
+      - run: echo "Found jira id from branch ${{github.event.pull_request.head.ref}}. jira id is ${{ steps.regex-match.outputs.group1 }}"
+      - uses: octokit/request-action@v2.x
+        id: update_title
+        with:
+          route: PATCH /repos/{repo}/pulls/{pull_number}
+          repo: ${{ github.repository }}
+          pull_number: ${{ github.event.number }}
+          title: ${{ steps.regex-match.outputs.group1 }} |#${{ github.event.number }}|${{ github.event.pull_request.title }}
+#          output: | # The | is significant!
+#            title: ${{ steps.regex-match.outputs.group1 }} |${{ github.event.number }}|${{ github.event.pull_request.title }}
+#            body: "Standard pull request title"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - run: echo "Logging pull request data ${{ steps.update_title.outputs.data }}"
+      - run: echo "Update pull request title finished with status ${{ steps.update_title.outputs.status }}"
