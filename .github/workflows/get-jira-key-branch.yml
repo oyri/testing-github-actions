@@ -25,11 +25,11 @@ jobs:
 #          pull_number: ${{ github.event.number }}
 #        env:
 #          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - run: echo "branch ${GITHUB_HEAD_REF}"
+      - run: echo "branch  ${GITHUB_REF} - ${GITHUB_REF##*/}"
       - uses: actions-ecosystem/action-regex-match@v2
         id: regex-match
         with:
-          text: ${GITHUB_HEAD_REF}
+          text: ${GITHUB_REF##*/}
           regex: '^work\/([\w]+-[\d]+)?.*$'
       - run: echo "match jira id ${{ steps.regex-match.outputs.group1 }}"
 #      - uses: octokit/request-action@v2.x
