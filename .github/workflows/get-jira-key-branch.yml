@@ -30,7 +30,7 @@ jobs:
         id: regex-match
         with:
           text: ${GITHUB_REF}
-          regex: '^refs\/heads\/work\/([\w]+-[\d]+)?.*$'
+          regex: 'refs\/heads\/work\/([\w]+-[\d]+)?.*'
       - run: echo "match jira id ${{ steps.regex-match.outputs.group1 }}"
 #      - uses: octokit/request-action@v2.x
 #        id: update_description
