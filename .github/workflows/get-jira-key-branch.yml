@@ -27,7 +27,7 @@ jobs:
 #          pull_number: ${{ github.event.number }}
 #        env:
 #          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - run: echo "branch  ${GITHUB_REF} - ${GITHUB_REF##*/} - ${GITHUB_REF#refs/heads/}"
+      - run: echo "branch ${{github.event.pull_request.head.ref}} -BASE_REF ${{ github.base_ref }} -REF ${GITHUB_REF} -REF-hash ${GITHUB_REF##*/} -REF-refs/heads ${GITHUB_REF#refs/heads/}"
       - name: Extract branch name
         shell: bash
         run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
