@@ -6,33 +6,13 @@ name: Get jira-id from branch name
 on:
   pull_request:
     branches: [ main ]
-    types: [ opened, synchronize ]
-#  push:
-#    branches:
-#      - '**'      # matches every branch
-#      - '!main'   # excludes main
+    types: [ opened ]
 
 jobs:
   findIssueId:
     runs-on: ubuntu-latest
     steps:
-#      - name: print need variables
-#        env:
-#          PULL_REQ_NO: ${{ toJSON(github.event.number) }}
-#        run: echo "pull-req-no $PULL_REQ_NO |repo $GITHUB_REPOSITORY |branch ${GITHUB_HEAD_REF}| ${{ fromJson(github.event.number) }}"
-#      - uses: octokit/request-action@v2.x
-#        id: list_commits
-#        with:
-#          route: GET /repos/{repo}/pulls/{pull_number}/commits
-#          repo: ${{ github.repository }}
-#          pull_number: ${{ github.event.number }}
-#        env:
-#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - run: echo "branch ${{github.event.pull_request.head.ref}} -BASE_REF ${{ github.base_ref }} -REF ${GITHUB_REF} -REF-hash ${GITHUB_REF##*/} -REF-refs/heads ${GITHUB_REF#refs/heads/}"
-#      - name: Extract branch name
-#        shell: bash
-#        run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
-#        id: extract_branch
       - uses: actions-ecosystem/action-regex-match@v2
         id: regex-match
         with:
@@ -40,7 +20,7 @@ jobs:
           regex: 'work\/([\w]+-[\d]+)?.*'
       - run: echo "Found jira id from branch ${{github.event.pull_request.head.ref}}. jira id is ${{ steps.regex-match.outputs.group1 }}"
       - uses: octokit/request-action@v2.x
-        id: update_description
+        id: update_title
         with:
           route: PATCH /repos/{repo}/pulls/{pull_number}
           repo: ${{ github.repository }}
@@ -51,5 +31,5 @@ jobs:
 #            body: "Standard pull request title"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - run: echo "Description data ${{ steps.update_description.outputs.data }}"
-      - run: echo "Update_description finished with status ${{ steps.update_description.outputs.status }}"
+      - run: echo "Logging pull request data ${{ steps.update_title.outputs.data }}"
+      - run: echo "Update pull request title finished with status ${{ steps.update_title.outputs.status }}"
