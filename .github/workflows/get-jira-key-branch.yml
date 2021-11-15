@@ -28,16 +28,16 @@ jobs:
 #        env:
 #          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - run: echo "branch ${{github.event.pull_request.head.ref}} -BASE_REF ${{ github.base_ref }} -REF ${GITHUB_REF} -REF-hash ${GITHUB_REF##*/} -REF-refs/heads ${GITHUB_REF#refs/heads/}"
-      - name: Extract branch name
-        shell: bash
-        run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
-        id: extract_branch
+#      - name: Extract branch name
+#        shell: bash
+#        run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
+#        id: extract_branch
       - uses: actions-ecosystem/action-regex-match@v2
         id: regex-match
         with:
-          text: ${{ steps.extract_branch.outputs.branch }}
+          text: ${{github.event.pull_request.head.ref}}
           regex: 'work\/([\w]+-[\d]+)?.*'
-      - run: echo "Found jira id from branch ${{ steps.extract_branch.outputs.branch }}. jira id is ${{ steps.regex-match.outputs.group1 }}"
+      - run: echo "Found jira id from branch ${{github.event.pull_request.head.ref}}. jira id is ${{ steps.regex-match.outputs.group1 }}"
       - uses: octokit/request-action@v2.x
         id: update_description
         with:
