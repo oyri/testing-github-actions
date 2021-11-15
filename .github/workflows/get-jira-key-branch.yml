@@ -27,6 +27,18 @@ jobs:
 #          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - run: echo "branch  ${GITHUB_REF} - ${GITHUB_REF##*/}"
       - uses: actions-ecosystem/action-regex-match@v2
+        id: regex-match-simple
+        with:
+          text: ${GITHUB_REF##*/}
+          regex: '(.+)?'
+      - run: echo " ${GITHUB_REF##*/} match jira id ${{ steps.regex-match-simple.outputs.group1 }}"      
+      - uses: actions-ecosystem/action-regex-match@v2
+        id: regex-match-simple2
+        with:
+          text: ${GITHUB_REF##*/}
+          regex: '([\w]+-[\d]+)?.*'
+      - run: echo "match jira id ${{ steps.regex-match-simple2.outputs.group1 }}"          
+      - uses: actions-ecosystem/action-regex-match@v2
         id: regex-match
         with:
           text: ${GITHUB_REF}
