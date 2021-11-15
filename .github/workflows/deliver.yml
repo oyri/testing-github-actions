@@ -22,5 +22,5 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           event-type: update-oyri-version
-          repository: 'oyri/testing-github-actions'
+          repository: 'oyri/testing-github-action-config'
           client-payload: '{"application": "${{env.APPLICATION}}","version":"${{env.IMAGETAG}}"}'
