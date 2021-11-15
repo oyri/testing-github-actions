@@ -1,0 +1,44 @@
+# This workflow will build a Java project with Maven
+# For more information see: https://help.github.com/actions/language-and-framework-guides/building-and-testing-java-with-maven
+
+name: Get jira-id from branch name
+
+on:
+  push:
+    branches:
+      - '**'      # matches every branch
+      - '!main'   # excludes main
+
+jobs:
+  findIssueId:
+    runs-on: ubuntu-latest
+    steps:
+      - name: print need variables
+        env:
+          PULL_REQ_NO: ${{ toJSON(github.event.number) }}
+        run: echo "pull-req-no $PULL_REQ_NO |repo $GITHUB_REPOSITORY |branch ${GITHUB_HEAD_REF}| ${{ fromJson(github.event.number) }}"
+#      - uses: octokit/request-action@v2.x
+#        id: list_commits
+#        with:
+#          route: GET /repos/{repo}/pulls/{pull_number}/commits
+#          repo: ${{ github.repository }}
+#          pull_number: ${{ github.event.number }}
+#        env:
+#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - uses: actions-ecosystem/action-regex-match@v2
+        id: regex-match
+        with:
+          text: ${{ github.head_ref }}
+          regex: '^work\/*(.*?)$'
+      - run: echo "match jira id ${{ steps.regex-match.outputs.group1 }}"
+#      - uses: octokit/request-action@v2.x
+#        id: update_description
+#        with:
+#          route: PATCH /repos/{repo}/pulls/{pull_number}
+#          repo: ${{ github.repository }}
+#          pull_number: ${{ github.event.number }}
+#          output: | # The | is significant!
+#            title: ${{env.VERSION}}| ${{ github.head_ref }} |${{ github.event.number }}|${{ github.event.pull_request.title }}
+#            body: "crappy"
+#        env:
+#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
