@@ -20,7 +20,7 @@ jobs:
       - name: 'update cd'
         uses: peter-evans/repository-dispatch@ce5485de42c9b2622d2ed064be479e8ed65e76f4 # pin@v1.1.3
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.OYRI_GITHUB_REPO_TOKEN }}
           event-type: update-oyri-version
           repository: 'oyri/testing-github-action-config'
           client-payload: '{"application": "${{env.APPLICATION}}","version":"${{env.IMAGETAG}}"}'
