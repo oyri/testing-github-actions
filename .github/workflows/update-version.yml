@@ -19,7 +19,7 @@ jobs:
         uses: jacobtomlinson/gha-find-replace@v2
         id: update-version-solution-fjord
         with:
-          find: "oyriimagerepo.no/${{ github.event.inputs.image-name }}:\\d{4}-\\d{2}-\\d{2}-\\d{4}-[\\w]+"
+          find: "oyriimagerepo.no/${{ github.event.inputs.image-name }}:\\d{4}-\\d{2}-\\d{2}-\\d{4}-[\\w:@]+"
           replace: "oyriimagerepo.no/${{ github.event.inputs.image-name }}:${{ github.event.inputs.image-version }}"
           include: "solution-fjord/*.yaml"
           regex: true
@@ -29,7 +29,7 @@ jobs:
         uses: jacobtomlinson/gha-find-replace@v2
         id: update-version-solution-mountain
         with:
-          find: "oyriimagerepo.no/${{ github.event.inputs.image-name }}:\\d{4}-\\d{2}-\\d{2}-\\d{4}-[\\w]+"
+          find: "oyriimagerepo.no/${{ github.event.inputs.image-name }}:\\d{4}-\\d{2}-\\d{2}-\\d{4}-[\\w:@]+"
           replace: "oyriimagerepo.no/${{ github.event.inputs.image-name }}:${{ github.event.inputs.image-version }}"
           include: "solution-mountain/*.yaml"
           regex: true
