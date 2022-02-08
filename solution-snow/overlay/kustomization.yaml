@@ -4,9 +4,9 @@ kind: Kustomization
 resources:
 - ../../base
 
-namespace: test-tools
+namespace: solution-snow
 
-namePrefix: test-tools-
+namePrefix: solution-snow-
 
 patches:
 - path: patches/route.yaml
@@ -21,24 +21,18 @@ patches:
 # -- App specific --
 
 replicas:
-- name: test-tools-testid
+- name: solution-snow-testid
   count: 1
 
 images:
 - name: default
-  newName: creiddev.azurecr.io/testid
+  newName: oyriimagerepo.no/testid
   digest: sha256:088313f64d6779f2ccce2d1b3389b31f01de42698fa99a2213af01f849ef4591
 
 configMapGenerator:
 - name: application-config
   files:
   - configs/config.yaml
-  - files/testidkeystore
 - name: container-envs
   envs:
   - configs/container.env
-
-
-
-
-
