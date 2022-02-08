@@ -35,6 +35,17 @@ jobs:
           regex: true
       - name: Log version update in solution-mountain
         run: echo "Version is updated in ${{ steps.update-version-solution-mountain.outputs.modifiedFiles }} files."   
+      
+      - name: Find and replace image version in solution-snow
+        uses: jacobtomlinson/gha-find-replace@v2
+        id: update-version-solution-snow
+        with:
+          find: "oyriimagerepo.no/${{ github.event.inputs.image-name }}/ndigest:SHA256:[\\w:@]+"
+          replace: "oyriimagerepo.no/${{ github.event.inputs.image-name }}/ndigest:SHA256:${{ github.event.inputs.image-version }}"
+          include: "solution-snow/**/kustomization.yaml"
+          regex: true
+      - name: Log version update in solution-snow
+        run: echo "Version is updated in ${{ steps.update-version-solution-snow.outputs.modifiedFiles }} files."
       - name: create pull request
         uses: peter-evans/create-pull-request@5e9d0ee9ea5ccf865a52a571cba827e4b52a1aff # pin@v3.8.0
         with:
