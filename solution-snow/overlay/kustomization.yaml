@@ -1,0 +1,44 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+- ../../base
+
+namespace: test-tools
+
+namePrefix: test-tools-
+
+patches:
+- path: patches/route.yaml
+  target:
+    group: route.openshift.io
+    version: v1
+    kind: Route
+- path: patches/vault-role.yaml
+  target:
+    kind: Deployment
+
+# -- App specific --
+
+replicas:
+- name: test-tools-testid
+  count: 1
+
+images:
+- name: default
+  newName: creiddev.azurecr.io/testid
+  digest: sha256:088313f64d6779f2ccce2d1b3389b31f01de42698fa99a2213af01f849ef4591
+
+configMapGenerator:
+- name: application-config
+  files:
+  - configs/config.yaml
+  - files/testidkeystore
+- name: container-envs
+  envs:
+  - configs/container.env
+
+
+
+
+
