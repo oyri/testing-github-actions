@@ -16,9 +16,8 @@ jobs:
     steps:
       - name: Set imagetag as env variable
         run: echo "IMAGETAG=$(date +'%Y-%m-%d-%H%M')-${GITHUB_SHA::8}" >> "$GITHUB_ENV"
-      - run:
-        echo "IMAGE_DIGEST=00001111abc" >> "$GITHUB_ENV"
-        
+      - name: Set image digest
+        run: echo "IMAGE_DIGEST='00001111abc'" >> "$GITHUB_ENV"        
       - id: step1
         run: echo "::set-output name=imagetag::${{env.IMAGETAG}}"
       - id: step2
