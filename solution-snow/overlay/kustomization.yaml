@@ -25,9 +25,9 @@ replicas:
   count: 1
 
 images:
-- name: default
-  newName: oyriimagerepo.no/testid
-  digest: sha256:088313f64d6779f2ccce2d1b3389b31f01de42698fa99a2213af01f849ef4591
+- op: replace
+  path: /spec/template/spec/containers/0/image
+  value: oyri.io/testid:2022-02-22-0924-72b05254@sha256:d46cad4eb57aba2f60b184fc7506ec5d212196193d1b0d178d8d828a5aca4269
 
 configMapGenerator:
 - name: application-config
