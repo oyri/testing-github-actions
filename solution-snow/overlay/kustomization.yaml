@@ -27,7 +27,7 @@ replicas:
 images:
 - op: replace
   path: /spec/template/spec/containers/0/image
-  value: oyriimagerepo.no/testid:2022-02-22-0924-72b05254@sha256:d46cad4eb57aba2f60b184fc7506ec5d212196193d1b0d178d8d828a5aca4269
+  value: oyriimagerepo.no/testid:2202-03-09-1111-dssdds
 
 configMapGenerator:
 - name: application-config
