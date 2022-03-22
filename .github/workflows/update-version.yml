@@ -48,7 +48,7 @@ jobs:
         run: echo "Version is updated in ${{ steps.update-version-solution-snow.outputs.modifiedFiles }} files."
       - name: Fail on no files updated
         if: ${{ steps.update-version-solution-snow.outputs.modifiedFiles }} == '0'
-        run: echo '::set-failed'
+        run: echo '::set-failed No-files-updated'
       - name: create pull request
         uses: peter-evans/create-pull-request@5e9d0ee9ea5ccf865a52a571cba827e4b52a1aff # pin@v3.8.0
         with:
