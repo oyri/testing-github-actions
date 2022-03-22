@@ -1,4 +1,4 @@
-name: Testing replace image version in config file
+name: Update image version
 on:
   workflow_dispatch:
    inputs:
