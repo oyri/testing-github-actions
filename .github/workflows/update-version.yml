@@ -40,8 +40,8 @@ jobs:
         uses: jacobtomlinson/gha-find-replace@v2
         id: update-version-solution-snow
         with:
-          find: "/oyriimagerepo.no/${{ github.event.inputs.image-name }}[\\s]+digest:\\sSHA256:[\\w]+/gm"
-          replace: "oyriimagerepo.no/${{ github.event.inputs.image-name }}\\n\\s\\sdigest:\\sSHA256:${{ github.event.inputs.image-version }}"
+          find: "oyriimagerepo.no/${{ github.event.inputs.image-name }}:\\d{4}-\\d{2}-\\d{2}-\\d{4}-[\\w:@]+"
+          replace: "oyriimagerepo.no/${{ github.event.inputs.image-name }}:${{ github.event.inputs.image-version }}"
           include: "solution-snow/**/kustomization.yaml"
           regex: true
       - name: Log version update in solution-snow
