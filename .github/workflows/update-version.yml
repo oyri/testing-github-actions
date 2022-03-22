@@ -51,7 +51,7 @@ jobs:
         uses: actions/github-script@v3
         with:
           script: |
-              core.setFailed('No files updated')
+              core.setFailed('No files updated with image: ${{ github.event.inputs.image-name }}')
       - name: create pull request
         uses: peter-evans/create-pull-request@5e9d0ee9ea5ccf865a52a571cba827e4b52a1aff # pin@v3.8.0
         with:
