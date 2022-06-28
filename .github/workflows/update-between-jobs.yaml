@@ -6,11 +6,16 @@ on:
         description: 'Image to update'
         required: true
         type: string
+      author:
+        description: 'Author as JSON'
+        required: true
+        type: string        
 jobs:
   job1:
     runs-on: ubuntu-latest
     env:
-      IMAGE-NAME:  ${{ inputs.image-name }}
+      IMAGE-NAME:  toJSON(${{ inputs.author}})
+      AUTHOR: ${{ inputs.image-name }}
     # Map a step output to a job output
     outputs:
       output1: ${{ steps.step1.outputs.imagetag }}
@@ -26,6 +31,8 @@ jobs:
         run: echo "::set-output name=imagedigest::${{env.IMAGE_DIGEST}}"
       - id: echo-image-name
         run: echo imagename ${{env.IMAGE-NAME}}
+      - id: author-print
+        run: echo "name ${{env.IMAGE-NAME.name}} email ${{env.IMAGE-NAME.email}} username ${{env.IMAGE-NAME.username}}"
   version-update1:
     runs-on: ubuntu-latest
     env:
