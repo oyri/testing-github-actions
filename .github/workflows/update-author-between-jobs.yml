@@ -15,7 +15,5 @@ jobs:
         run: echo imagename ${{env.IMAGE-NAME}}
       - id: echo-author-obj
         run: echo ${{ github.event.client_payload.author }}
-      - id: echo-author
-        run: echo "PERS=${{ toJSON(github.event.client_payload.author) }}" >> "$GITHUB_ENV"
       - id: author-print
-        run: echo "${{env.PERS}} name ${{env.PERS.name}} email ${{env.PERS.email}} username ${{env.PERS.username}}"
+        run: echo " name ${{ github.event.client_payload.author.name }} email ${{ github.event.client_payload.author.email }} username ${{ github.event.client_payload.author.username }}"
