@@ -16,4 +16,4 @@ jobs:
       - id: echo-author-obj
         run: echo ${{ github.event.client_payload.author }}
       - id: author-print
-        run: echo " name ${{ github.event.client_payload.author.name }} email ${{ github.event.client_payload.author.email }} username ${{ github.event.client_payload.author.username }}"
+        run: echo "jira ${{ github.event.client_payload.jira-id }} name ${{ github.event.client_payload.author.name }} email ${{ github.event.client_payload.author.email }} username ${{ github.event.client_payload.author.username }}"
