@@ -1,0 +1,18 @@
+name: Sende parameters between jobs
+on:
+  repository_dispatch:
+    types: [update-version]
+env:
+  IMAGE-NAME: ${{ github.event.client_payload.image-name }}
+  AUTHOR: ${{ toJSON(github.event.client_payload.author) }}     
+  
+jobs:
+  job1:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set imagetag as env variable
+        run: echo "IMAGETAG=$(date +'%Y-%m-%d-%H%M')-${GITHUB_SHA::8}" >> "$GITHUB_ENV"
+      - id: echo-image-name
+        run: echo imagename ${{env.IMAGE-NAME}}
+      - id: author-print
+        run: echo "name ${{env.AUTHOR.name}} email ${{env.AUTHOR.email}} username ${{env.AUTHOR.username}}"
