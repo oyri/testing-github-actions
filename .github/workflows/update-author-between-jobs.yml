@@ -4,8 +4,7 @@ on:
     types: [update-version]
 env:
   IMAGE-NAME: ${{ github.event.client_payload.image-name }}
-  AUTHOR: ${{ github.event.client_payload.author }}
-  
+
 jobs:
   job1:
     runs-on: ubuntu-latest
