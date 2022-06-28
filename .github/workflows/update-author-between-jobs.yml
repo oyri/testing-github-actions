@@ -4,8 +4,8 @@ on:
     types: [update-version]
 env:
   IMAGE-NAME: ${{ github.event.client_payload.image-name }}
-  AUTHOR: ${{ toJSON(github.event.client_payload.author) }}     
-  AUTHOR2: ${{ github.event.client_payload.author }}     
+  AUTHOR: ${{ toJSON(github.event.client_payload.author) }} 
+  AUTHOR-OBJ: ${{ github.event.client_payload.author }}
   
 jobs:
   job1:
@@ -16,6 +16,6 @@ jobs:
       - id: echo-image-name
         run: echo imagename ${{env.IMAGE-NAME}}
       - id: echo-author-obj
-        run: echo AUTHOR2 ${{env.AUTHOR2}}        
+        run: echo AUTHOR-OBJ ${{env.AUTHOR-OBJ}}        
       - id: author-print
         run: echo "${{env.AUTHOR}} name ${{env.AUTHOR.name}} email ${{env.AUTHOR.email}} username ${{env.AUTHOR.username}}"
