@@ -14,8 +14,7 @@ jobs:
   job1:
     runs-on: ubuntu-latest
     env:
-      IMAGE-NAME:  toJSON(${{ inputs.author}})
-      AUTHOR: ${{ inputs.image-name }}
+      IMAGE-NAME: ${{ inputs.image-name }}
     # Map a step output to a job output
     outputs:
       output1: ${{ steps.step1.outputs.imagetag }}
@@ -32,7 +31,7 @@ jobs:
       - id: echo-image-name
         run: echo imagename ${{env.IMAGE-NAME}}
       - id: author-print
-        run: echo "name ${{env.IMAGE-NAME.name}} email ${{env.IMAGE-NAME.email}} username ${{env.IMAGE-NAME.username}}"
+        run: echo "name ${{input.author.name}} email ${{input.author.email}} username ${{input.author.username}}"
   version-update1:
     runs-on: ubuntu-latest
     env:
