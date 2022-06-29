@@ -4,7 +4,7 @@ on:
     types: [update-version]
 env:
   IMAGE-NAME: ${{ github.event.client_payload.image-name }}
-
+  MANUAL-DEPLOY: ${{ github.event.client_payload.manual-deploy }}
 jobs:
   job1:
     runs-on: ubuntu-latest
@@ -17,3 +17,29 @@ jobs:
         run: echo ${{ github.event.client_payload.author }}
       - id: author-print
         run: echo "jira ${{ github.event.client_payload.jira-id }} name ${{ github.event.client_payload.author.name }} email ${{ github.event.client_payload.author.email }} username ${{ github.event.client_payload.author.username }}"
+      - name: create pull request
+        uses: peter-evans/create-pull-request@923ad837f191474af6b1721408744feb989a4c27 # pin@v4.0.3
+        with:
+          commit-message: "${{ env.JIRA-ID }}: updating version of ${{ env.IMAGE-NAME }}"
+          branch: ${{ env.IMAGE-NAME }}-version-update
+          delete-branch: true
+          labels: update-version
+          branch-suffix: random
+          assignees: ${{ github.event.client_payload.author.username }}
+          author: ${{ github.event.client_payload.author.name }} <${{ github.event.client_payload.author.email }}>
+          committer: ${{ github.event.client_payload.author.name }} <${{ github.event.client_payload.author.email }}>
+          title: "${{ env.JIRA-ID }}: updating version of ${{ env.IMAGE-NAME}} "
+          body: "automated pull-request"
+      - name: merge-updated-version
+        id: automerge
+        if: ${{ env. MANUAL-DEPLOY == '' |  env.MANUAL-DEPLOY == 'false' }}
+        uses: "pascalgn/automerge-action@v0.15.3"
+        env:
+          GITHUB_TOKEN: "${{ github.token }}"
+          MERGE_LABELS: "update-version"
+          MERGE_COMMIT_MESSAGE: "pull-request-title"
+          MERGE_METHOD: "squash"
+      - name: feedback
+        if: steps.automerge.outputs.mergeResult == "merged"
+        run: |
+          echo "Pull request ${{ steps.automerge.outputs.pullRequestNumber }} merged!"
