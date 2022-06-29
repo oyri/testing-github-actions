@@ -5,7 +5,7 @@ name: Deliver code to config repo
 
 on:
   push:
-    branches: [ main ]
+    branches: [ dd ]
 
 jobs:
   build:
