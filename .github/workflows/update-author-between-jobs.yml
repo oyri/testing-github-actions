@@ -38,9 +38,9 @@ jobs:
           delete-branch: true
           labels: update-version
           branch-suffix: random
-          assignees: ${{ github.event.client_payload.author.username }}
-          author: ${{ github.event.client_payload.author.name }} <${{ github.event.client_payload.author.email }}>
-          committer: ${{ github.event.client_payload.author.name }} <${{ github.event.client_payload.author.email }}>
+          assignees: ${{ env.AUTHOR-USERNAME }}
+          author: ${{ env.AUTHOR-NAME }} <${{ env.AUTHOR-EMAIL }}>
+          committer: ${{ env.AUTHOR-NAME }} <${{ env.AUTHOR-EMAIL }}>
           title: "${{ env.JIRA-ID }}: updating version of ${{ env.IMAGE-NAME}} "
           body: "automated pull-request"
       - name: merge-updated-version
