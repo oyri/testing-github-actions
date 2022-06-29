@@ -6,10 +6,7 @@ on:
         description: 'Image to update'
         required: true
         type: string
-      author:
-        description: 'Author as JSON'
-        required: true
-        type: string        
+     
 jobs:
   job1:
     runs-on: ubuntu-latest
@@ -31,7 +28,9 @@ jobs:
       - id: echo-image-name
         run: echo imagename ${{env.IMAGE-NAME}}
       - id: author-print
-        run: echo "name ${{input.author.name}} email ${{input.author.email}} username ${{input.author.username}}"
+        run: echo "actor ${{ github.actor }}"
+      - id: author-print-json
+        run: echo "actor-json ${{ toJSON(github.actor) }}"        
   version-update1:
     runs-on: ubuntu-latest
     env:
