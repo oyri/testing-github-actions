@@ -5,12 +5,25 @@ on:
 env:
   IMAGE-NAME: ${{ github.event.client_payload.image-name }}
   MANUAL-DEPLOY: ${{ github.event.client_payload.manual-deploy }}
+  AUTHOR-USERNAME: ${{ github.event.client_payload.author.username }}
+  AUTHOR-NAME: ${{ github.event.client_payload.author.name }}
+  AUTHOR-EMAIL: ${{ github.event.client_payload.author.email }}
+  ACTOR: ${{ github.event.client_payload.actor }}
 jobs:
   job1:
     runs-on: ubuntu-latest
     steps:
       - name: Set imagetag as env variable
         run: echo "IMAGETAG=$(date +'%Y-%m-%d-%H%M')-${GITHUB_SHA::8}" >> "$GITHUB_ENV"
+      - name: Set actorusername
+        if: ${{ env.AUTHOR-USERNAME=='' && env.ACTOR != '' }}
+        run: echo "AUTHOR-USERNAME=${env.ACTOR}" >> "$GITHUB_ENV"
+      - name: Set actorusername
+        if: ${{ env.AUTHOR-NAME=='' && env.ACTOR != ''}}
+        run: echo "AUTHOR-USER=${env.ACTOR}" >> "$GITHUB_ENV"    
+      - name: Set actorusername
+        if: ${{ env.AUTHOR-NAME=='' && env.ACTOR != ''}}
+        run: echo "AUTHOR-EMAIL=${env.ACTOR}@users.noreply.github.com" >> "$GITHUB_ENV"          
       - id: echo-image-name
         run: echo imagename ${{env.IMAGE-NAME}}
       - id: echo-author-obj
