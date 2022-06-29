@@ -1,0 +1,31 @@
+name: Promote to stable
+
+on:
+  workflow_dispatch:
+      inputs:
+        image-name:
+          description: 'Image'
+          required: true
+          type: choice
+          options:
+          - altinn-gateway
+          - maskinporten-oauth2-server
+
+jobs:
+  remote-pr:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: 'Set image'
+        id: set-image
+        run: echo ::set-output name=image::$(cat apps/${{ github.event.inputs.image-name }}/overlays/latest/patches/image.yaml | grep ${{ secrets.registry-url }}/${{ github.event.inputs.image-name }} | awk -F ' ' '{print $2}')
+      - name: 'Set version'
+        id: set-version
+        run: echo ::set-output name=version::$(echo "${{ steps.set-image.outputs.image }}" | grep -oE "[[:digit:]]{4}-[[:digit:]]{2}-[[:digit:]]{2}-[[:digit:]]{4}-[[:alnum:]]{8}")
+      - name: dispatch
+        uses: peter-evans/repository-dispatch@11ba7d3f32dc7cc919d1c43f1fec1c05260c26b5 # pin@v2
+        with:
+         token: ${{ github.token }}
+         event-type: 'update-version'
+         repository: 'oyri/testing-github-actions'
+         client-payload: '{"repository": "${{ github.repository }}", "author": "${{ github.actor }}", "image-name": "${{ github.event.inputs.image-name }}", "registry-url": "${{secrets.REGISTRY_URL}}", "image": "${{ steps.set-image.outputs.image }}", "version":"${{ steps.set-version.outputs.version }}", "kustomize-overlay": "stable"}'
