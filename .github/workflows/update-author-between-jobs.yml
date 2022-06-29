@@ -32,10 +32,10 @@ jobs:
           body: "automated pull-request"
       - name: merge-updated-version
         id: automerge
-        if: ${{ env. MANUAL-DEPLOY == '' |  env.MANUAL-DEPLOY == 'false' }}
+        if: ${{ env. MANUAL-DEPLOY == '' ||  env.MANUAL-DEPLOY == 'false' }}
         uses: "pascalgn/automerge-action@v0.15.3"
         env:
-          GITHUB_TOKEN: "${{ github.token }}"
+          GITHUB_TOKEN: "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"
           MERGE_LABELS: "update-version"
           MERGE_COMMIT_MESSAGE: "pull-request-title"
           MERGE_METHOD: "squash"
