@@ -51,6 +51,7 @@ jobs:
 #             doesn't start with an uppercase character.
 #           validateSingleCommit: true
   updatePullRequest:
+    if: ${{ false }}
     runs-on: ubuntu-latest
 #     needs: build
     steps:
