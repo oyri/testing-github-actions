@@ -46,16 +46,16 @@ jobs:
           committer: ${{ env.AUTHOR-NAME }} <${{ env.AUTHOR-EMAIL }}>
           title: "${{ env.JIRA-ID }}: updating version of ${{ env.IMAGE-NAME}} "
           body: "automated pull-request"
-      - name: merge-updated-version
-        id: automerge
-        if: ${{ env. MANUAL-DEPLOY == '' ||  env.MANUAL-DEPLOY == 'false' }}
-        uses: "pascalgn/automerge-action@v0.15.3"
-        env:
-          GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
-          MERGE_LABELS: "update-version"
-          MERGE_COMMIT_MESSAGE: "pull-request-title"
-          MERGE_METHOD: "squash"
-      - name: feedback
-        if: ${{steps.automerge.outputs.mergeResult == 'merged'}}
-        run: |
-          echo "Pull request ${{ steps.automerge.outputs.pullRequestNumber }} merged!"
+#      - name: merge-updated-version
+#        id: automerge
+#        if: ${{ env. MANUAL-DEPLOY == '' ||  env.MANUAL-DEPLOY == 'false' }}
+#        uses: "pascalgn/automerge-action@v0.15.3"
+#        env:
+##          GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+#          MERGE_LABELS: "update-version"
+#          MERGE_COMMIT_MESSAGE: "pull-request-title"
+#          MERGE_METHOD: "squash"
+#      - name: feedback
+#        if: ${{steps.automerge.outputs.mergeResult == 'merged'}}
+#        run: |
+#          echo "Pull request ${{ steps.automerge.outputs.pullRequestNumber }} merged!"
