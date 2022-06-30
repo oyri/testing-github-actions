@@ -51,7 +51,7 @@ jobs:
         if: ${{ env. MANUAL-DEPLOY == '' ||  env.MANUAL-DEPLOY == 'false' }}
         uses: alexwilson/enable-github-automerge-action@1.0.0
         with:
-#          github-token: "${{ secrets.GITHUB_TOKEN }}"
+          github-token: "${{ secrets.GITHUB_TOKEN }}"
           merge-method: "SQUASH"
 #        uses: "pascalgn/automerge-action@v0.15.3"
 #        env:
