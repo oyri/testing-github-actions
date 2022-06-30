@@ -31,7 +31,7 @@ jobs:
       - id: author-print
         run: echo "jira ${{ github.event.client_payload.jira-id }} name ${{ github.event.client_payload.author.name }} email ${{ github.event.client_payload.author.email }} username ${{ github.event.client_payload.author.username }}"
       - id: add-file
-        run: echo "hei ">>hei.txt 
+        run: echo "hei ">>hei.txt && git add hei.txt
       - name: create pull request
         uses: peter-evans/create-pull-request@923ad837f191474af6b1721408744feb989a4c27 # pin@v4.0.3
         with:
