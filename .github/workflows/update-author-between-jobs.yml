@@ -15,13 +15,13 @@ jobs:
     steps:
       - name: Set imagetag as env variable
         run: echo "IMAGETAG=$(date +'%Y-%m-%d-%H%M')-${GITHUB_SHA::8}" >> "$GITHUB_ENV"
-      - name: Set actorusername
+      - name: Set actor username
         if: ${{ env.AUTHOR-USERNAME=='' && env.ACTOR != '' }}
         run: echo "AUTHOR-USERNAME=${env.ACTOR}" >> "$GITHUB_ENV"
-      - name: Set actorname
+      - name: Set actor name
         if: ${{ env.AUTHOR-NAME=='' && env.ACTOR != ''}}
         run: echo "AUTHOR-USER=${env.ACTOR}" >> "$GITHUB_ENV"    
-      - name: Set actoremail
+      - name: Set actor email
         if: ${{ env.AUTHOR-NAME=='' && env.ACTOR != ''}}
         run: echo "AUTHOR-EMAIL=${env.ACTOR}@users.noreply.github.com" >> "$GITHUB_ENV"          
       - id: echo-image-name
