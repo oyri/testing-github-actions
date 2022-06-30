@@ -45,7 +45,7 @@ jobs:
           author: ${{ env.AUTHOR-NAME }} <${{ env.AUTHOR-EMAIL }}>
           committer: ${{ env.AUTHOR-NAME }} <${{ env.AUTHOR-EMAIL }}>
           title: "${{ env.JIRA-ID }}: updating version of ${{ env.IMAGE-NAME}} "
-          body: "automated pull-request"
+          body: "Automated pull-request. Co-authored-by: ${{ env.AUTHOR-NAME }} <${{ env.AUTHOR-EMAIL }}>"
       - name: merge-updated-version
         id: automerge
         if: ${{ env. MANUAL-DEPLOY == '' ||  env.MANUAL-DEPLOY == 'false' }}
