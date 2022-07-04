@@ -20,7 +20,7 @@ jobs:
         run: echo "AUTHOR-USERNAME=${{env.ACTOR}}" >> "$GITHUB_ENV"
       - name: Set actor name
         if: ${{ env.AUTHOR-NAME=='' && env.ACTOR != ''}}
-        run: echo "AUTHOR-USER=${{env.ACTOR}}" >> "$GITHUB_ENV"    
+        run: echo "AUTHOR-NAME=${{env.ACTOR}}" >> "$GITHUB_ENV"    
       - name: Set actor email
         if: ${{ env.AUTHOR-NAME=='' && env.ACTOR != ''}}
         run: echo "AUTHOR-EMAIL=${{env.ACTOR}}@users.noreply.github.com" >> "$GITHUB_ENV"          
