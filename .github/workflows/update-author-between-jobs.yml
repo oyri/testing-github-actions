@@ -48,7 +48,7 @@ jobs:
           body: "Automated pull-request. Co-authored-by: ${{ env.AUTHOR-NAME }} <${{ env.AUTHOR-EMAIL }}>"
       - name: merge-updated-version
         id: automerge
-        if: ${{ env.MANUAL-DEPLOY == '' ||  env.MANUAL-DEPLOY == false }}
+        if: ${{ env.MANUAL-DEPLOY == '' ||  env.MANUAL-DEPLOY == 'false' }}
         uses: "pascalgn/automerge-action@v0.15.3"
         env:
           GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
