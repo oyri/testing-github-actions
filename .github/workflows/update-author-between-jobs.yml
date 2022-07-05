@@ -7,7 +7,7 @@ env:
   MANUAL-DEPLOY: ${{ github.event.client_payload.manual-deploy }}
   AUTHOR-USERNAME: ${{ github.event.client_payload.author.username }}
   AUTHOR-NAME: ${{ github.event.client_payload.author.name }}
-  AUTHOR-EMAIL: ${{ github.event.client_payload.author.email }}
+  AUTHOR-EMAIL: ${{ github.event.client_payload.author.username }}@users.noreply.github.com
   ACTOR: ${{ github.event.client_payload.actor }}
 jobs:
   job1:
@@ -15,15 +15,12 @@ jobs:
     steps:
       - name: Set imagetag as env variable
         run: echo "IMAGETAG=$(date +'%Y-%m-%d-%H%M')-${GITHUB_SHA::8}" >> "$GITHUB_ENV"
-      - name: Set actor username
+      - name: Set actor username and email
         if: ${{ env.AUTHOR-USERNAME=='' && env.ACTOR != '' }}
-        run: echo "AUTHOR-USERNAME=${{env.ACTOR}}" >> "$GITHUB_ENV"
+        run: echo "AUTHOR-USERNAME=${{env.ACTOR}}" >> "$GITHUB_ENV" && echo "AUTHOR-EMAIL=${{env.ACTOR}}@users.noreply.github.com" >> "$GITHUB_ENV"
       - name: Set actor name
         if: ${{ env.AUTHOR-NAME=='' && env.ACTOR != ''}}
         run: echo "AUTHOR-NAME=${{env.ACTOR}}" >> "$GITHUB_ENV"    
-      - name: Set actor email
-        if: ${{ env.AUTHOR-EMAIL=='' && env.ACTOR != ''}}
-        run: echo "AUTHOR-EMAIL=${{env.ACTOR}}@users.noreply.github.com" >> "$GITHUB_ENV"          
       - id: echo-image-name
         run: echo imagename ${{env.IMAGE-NAME}}
       - id: echo-author-obj-actor
