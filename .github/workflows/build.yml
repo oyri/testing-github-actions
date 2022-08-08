@@ -8,6 +8,12 @@ on:
     branches: [ main ]
 
 jobs:
+  print-stuff:
+    if: ${{ github.event_name == 'pull_request'}}
+    runs-on: ubuntu-latest
+    steps:
+      - name: echo stuff
+        run: echo "stuff"
   dumpcontext:
     runs-on: ubuntu-latest
 
