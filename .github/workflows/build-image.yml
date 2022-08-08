@@ -5,6 +5,13 @@ on:
     branches: [ main ]
 
 jobs:
+  dumpcontext:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Dump GitHub context
+        env:
+          GITHUB_CONTEXT: ${{ toJSON(github) }}
+        run: echo "$GITHUB_CONTEXT"
   verify-pull-request-title:
     if: ${{ github.event_name == 'pull_request'}}
     runs-on: ubuntu-latest
