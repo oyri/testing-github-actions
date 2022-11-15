@@ -9,6 +9,6 @@ jobs:
        run: |
         touch randi.txt
         echo "filename=$(ls)" >> $GITHUB_OUTPUT
-      - name: echo filename ${{ env.filename }}
-        run: file ${{ env.filename }}
+     - name: echo filename ${{ env.filename }}
+       run: file ${{ env.filename }}
         
