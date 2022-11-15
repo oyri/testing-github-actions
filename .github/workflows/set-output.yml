@@ -7,9 +7,10 @@ jobs:
     runs-on: "ubuntu-latest"
     steps:
      - name: print filename
+       id: print
        run: |
         touch randi.txt
-        echo "filename=$(ls)" >> $GITHUB_OUTPUT
-     - name: echo filename ${{ env.filename }}
-       run: file ${{ env.filename }}
+        echo "FILENAME=$(ls)" >> $GITHUB_OUTPUT
+     - name: echo filename ${{ steps.print.outputs.FILENAME }}
+       run: file ${{ steps.print.outputs.FILENAME }}
         
