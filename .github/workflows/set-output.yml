@@ -1,0 +1,14 @@
+name: set params
+on:
+  workflow_dispatch:
+jobs:
+  variables-save:
+    runs-on: ${{ inputs.runner }}
+    steps:
+     - name: print filename
+       run: |
+        touch randi.txt
+        echo "filename=$(ls)" >> $GITHUB_OUTPUT
+      - name: echo filename ${{ env.filename }}
+        run: file ${{ env.filename }}
+        
