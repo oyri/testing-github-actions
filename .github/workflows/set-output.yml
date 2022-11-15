@@ -3,7 +3,8 @@ on:
   workflow_dispatch:
 jobs:
   variables-save:
-    runs-on: ${{ inputs.runner }}
+    name: testing
+    runs-on: "ubuntu-latest"
     steps:
      - name: print filename
        run: |
