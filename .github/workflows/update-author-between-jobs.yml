@@ -58,10 +58,10 @@ jobs:
       - name: merge-updated-version
         id: automerge
         if: ${{ env.MANUAL-DEPLOY != 'true' }}
-        uses: "pascalgn/automerge-action@v0.15.3"
+        uses: "pascalgn/automerge-action@v0.15.5"
         env:
           GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
-          MERGE_LABELS: "update-version"
+          MERGE_LABELS: "update-version,!manual-deploy"
           MERGE_COMMIT_MESSAGE: "pull-request-title-and-description"
           MERGE_METHOD: "squash"
       - name: feedback
