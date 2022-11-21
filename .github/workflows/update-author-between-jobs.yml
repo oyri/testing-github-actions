@@ -48,7 +48,7 @@ jobs:
           delete-branch: true
           labels: |
             update-version
-            ${{ env.LABELS }}
+            ${{ fromJson(env.LABELS) }}
           branch-suffix: random
           assignees: ${{ env.AUTHOR-USERNAME }}
           author: ${{ env.AUTHOR-NAME }} <${{ env.AUTHOR-EMAIL }}>
