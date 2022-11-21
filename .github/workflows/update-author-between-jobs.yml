@@ -9,7 +9,7 @@ env:
   AUTHOR-NAME: ${{ github.event.client_payload.author.name }}
   AUTHOR-EMAIL: ${{ github.event.client_payload.author.username }}@users.noreply.github.com
   ACTOR: ${{ github.event.client_payload.actor }}
-  PR-LABELS: ${{ join(github.event.client_payload.pr-labels, ', ') }}
+  PR-LABELS: ${{ join(fromJSON(github.event.client_payload.pr-labels), ', ') }}
 jobs:
   job1:
     runs-on: ubuntu-latest
