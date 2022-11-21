@@ -9,6 +9,7 @@ env:
   AUTHOR-NAME: ${{ github.event.client_payload.author.name }}
   AUTHOR-EMAIL: ${{ github.event.client_payload.author.username }}@users.noreply.github.com
   ACTOR: ${{ github.event.client_payload.actor }}
+  LABELS: ${{ github.event.client_payload.pr-labels }}
 jobs:
   job1:
     runs-on: ubuntu-latest
@@ -45,7 +46,9 @@ jobs:
           commit-message: "${{ env.JIRA-ID }}: updating version of ${{ env.IMAGE-NAME }}"
           branch: ${{ env.IMAGE-NAME }}-version-update
           delete-branch: true
-          labels: update-version
+          labels: |
+            update-version
+            ${{ env.LABELS }}
           branch-suffix: random
           assignees: ${{ env.AUTHOR-USERNAME }}
           author: ${{ env.AUTHOR-NAME }} <${{ env.AUTHOR-EMAIL }}>
