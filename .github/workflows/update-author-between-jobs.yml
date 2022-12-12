@@ -8,12 +8,16 @@ env:
   AUTHOR-USERNAME: ${{ github.event.client_payload.author.username }}
   AUTHOR-NAME: ${{ github.event.client_payload.author.name }}
   AUTHOR-EMAIL: ${{ github.event.client_payload.author.username }}@users.noreply.github.com
-  ACTOR: ${{ github.event.client_payload.actor }}
-  PR-LABELS: ${{ join(fromJSON(github.event.client_payload.pr-labels), ', ') }}
+  ACTOR: ${{ github.event.client_payload.actor }}  
+  PR-LABELS: ${{ fromJSON(github.event.client_payload.pr-labels) }}
+  
 jobs:
   job1:
     runs-on: ubuntu-latest
     steps:
+      - name: Parse PR labels
+        if: ${{ env.PR-LABELS!=''}}
+        run: echo "PR-LABELS=${{ join(env.PR-LABELS), ', ') }}" >> "$GITHUB_ENV"
       - name: Dump GitHub context
         env:
           GITHUB_CONTEXT: ${{ toJSON(github) }}
