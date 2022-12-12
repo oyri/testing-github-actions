@@ -17,7 +17,7 @@ jobs:
     steps:
       - name: Parse PR labels
         if: ${{ env.PR-LABELS!=''}}
-        run: echo "PR-LABELS=${{ join(env.PR-LABELS), ', ') }}" >> "$GITHUB_ENV"
+        run: echo "PR-LABELS=${{ join(env.PR-LABELS, ', ') }}" >> "$GITHUB_ENV"
       - name: Dump GitHub context
         env:
           GITHUB_CONTEXT: ${{ toJSON(github) }}
