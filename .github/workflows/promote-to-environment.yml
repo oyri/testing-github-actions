@@ -1,0 +1,97 @@
+name: Promote application to enviroment
+
+on:
+  workflow_call:
+    inputs:
+      application:
+        description: Application to deploy
+        required: true
+        type: string
+      namespace:
+        description: Namespace revision to deploy
+        required: true
+        type: string
+      revision:
+        description: Git revision to deploy
+        required: true
+        type: string
+      source-image:
+        description: Image to deploy
+        required: false
+        type: string
+      source-app-path:
+        description: Path to app in previous namespace
+        required: true
+        type: string
+      source-environment:
+        description: Path to environment in previous namespace
+        required: true
+        type: string
+      environment:
+        description: Environment to deploy application to (test|ver2|prod)
+        required: true
+        type: string
+    secrets:
+      ssh-key-promote-application:
+        description: SSH key for promote application
+        required: true
+
+jobs:
+  create-pr-to-env:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+#       - uses: webfactory/ssh-agent@v0.7.0
+#         with:
+#           ssh-private-key: ${{ secrets.ssh-key-promote-application }}
+      - name: Find APPLICATION-NAME
+        run: |
+          echo "APPLICATION-NAME=$(basename ${{ inputs.source-app-path }})" >> "$GITHUB_ENV"
+      - name: Set target app path if test
+        if: ${{ inputs.environment == 'test' }}
+        run: |
+          echo "APP_PATH=$(echo ${{ inputs.source-app-path }} | sed "s/systest/kt/")" >> "$GITHUB_ENV"  
+      - name: Set target app path if ver2
+        if: ${{ inputs.environment == 'ver2' }}
+        run: |
+          echo "APP_PATH=$(echo ${{ inputs.source-app-path }} | sed "s/systest/kt/" | sed "s/${{ inputs.namespace }}/${{ inputs.namespace }}-ver2/")" >> "$GITHUB_ENV"
+      - name: Set target app path if prod
+        if: ${{ inputs.environment == 'prod' }}
+        run: |
+          echo "APP_PATH=$(echo ${{ inputs.source-app-path }} | sed "s/systest/prod/")" >> "$GITHUB_ENV"  
+
+      - name: Promote base commit sha
+        uses: jacobtomlinson/gha-find-replace@v2
+        id: promote-base-commit-sha
+        with:
+          find: "apps/${{ env.APPLICATION-NAME }}/base/\\?ref=[a-fA-F0-9]{40}"
+          replace: "apps/${{ env.APPLICATION-NAME }}/base/?ref=${{ inputs.revision }}"
+          include: "${{ env.APP_PATH }}kustomize/kustomization.yaml"
+          regex: true
+      - name: Log version update for ${{ env.APPLICATION-NAME }}
+        run: echo "Version is updated in ${{ steps.promote-base-commit-sha.outputs.modifiedFiles }} files for ${{ env.APPLICATION-NAME }} in ${{ env.APP_PATH }}."
+
+      - name: 'Kustomize Build'
+        run: |
+          kustomize build ${{ env.APP_PATH }}kustomize > tmp-manifests.yaml
+
+      - name: 'Diff manifests'
+        run: |
+          if cmp ${{ env.APP_PATH }}manifests.yaml tmp-manifests.yaml; then
+            echo "### Stopping promotion: No diff found for ${{ env.APP_PATH }}manifests.yaml after build" >> "$GITHUB_STEP_SUMMARY" 
+            exit 1
+          else
+            cp tmp-manifests.yaml ${{ env.APP_PATH }}manifests.yaml
+            rm tmp-manifests.yaml
+          fi
+
+      - name: create pull request
+        uses: peter-evans/create-pull-request@2b011faafdcbc9ceb11414d64d0573f37c774b04 # pin@v4.2.3
+        with:
+          commit-message: "${{ inputs.environment }}: Updating ${{ env.APPLICATION-NAME }} for ${{ inputs.namespace }}"
+          branch: ${{ inputs.application }}-promote-${{ inputs.environment }}
+          delete-branch: true
+          labels: update-${{ inputs.environment }}
+          branch-suffix: random
+          title: "${{ inputs.environment }}: Updating ${{ env.APPLICATION-NAME }}"
+          body: "Automated pull-request of ${{ env.APP_PATH }}"
