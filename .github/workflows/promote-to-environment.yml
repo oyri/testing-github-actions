@@ -59,31 +59,32 @@ jobs:
         if: ${{ inputs.environment == 'prod' }}
         run: |
           echo "APP_PATH=$(echo ${{ inputs.source-app-path }} | sed "s/systest/prod/")" >> "$GITHUB_ENV"  
+      - name: dummy change
+        run: date >> datetime.txt
+#       - name: Promote base commit sha
+#         uses: jacobtomlinson/gha-find-replace@v2
+#         id: promote-base-commit-sha
+#         with:
+#           find: "apps/${{ env.APPLICATION-NAME }}/base/\\?ref=[a-fA-F0-9]{40}"
+#           replace: "apps/${{ env.APPLICATION-NAME }}/base/?ref=${{ inputs.revision }}"
+#           include: "${{ env.APP_PATH }}kustomize/kustomization.yaml"
+#           regex: true
+#       - name: Log version update for ${{ env.APPLICATION-NAME }}
+#         run: echo "Version is updated in ${{ steps.promote-base-commit-sha.outputs.modifiedFiles }} files for ${{ env.APPLICATION-NAME }} in ${{ env.APP_PATH }}."
 
-      - name: Promote base commit sha
-        uses: jacobtomlinson/gha-find-replace@v2
-        id: promote-base-commit-sha
-        with:
-          find: "apps/${{ env.APPLICATION-NAME }}/base/\\?ref=[a-fA-F0-9]{40}"
-          replace: "apps/${{ env.APPLICATION-NAME }}/base/?ref=${{ inputs.revision }}"
-          include: "${{ env.APP_PATH }}kustomize/kustomization.yaml"
-          regex: true
-      - name: Log version update for ${{ env.APPLICATION-NAME }}
-        run: echo "Version is updated in ${{ steps.promote-base-commit-sha.outputs.modifiedFiles }} files for ${{ env.APPLICATION-NAME }} in ${{ env.APP_PATH }}."
+#       - name: 'Kustomize Build'
+#         run: |
+#           kustomize build ${{ env.APP_PATH }}kustomize > tmp-manifests.yaml
 
-      - name: 'Kustomize Build'
-        run: |
-          kustomize build ${{ env.APP_PATH }}kustomize > tmp-manifests.yaml
-
-      - name: 'Diff manifests'
-        run: |
-          if cmp ${{ env.APP_PATH }}manifests.yaml tmp-manifests.yaml; then
-            echo "### Stopping promotion: No diff found for ${{ env.APP_PATH }}manifests.yaml after build" >> "$GITHUB_STEP_SUMMARY" 
-            exit 1
-          else
-            cp tmp-manifests.yaml ${{ env.APP_PATH }}manifests.yaml
-            rm tmp-manifests.yaml
-          fi
+#       - name: 'Diff manifests'
+#         run: |
+#           if cmp ${{ env.APP_PATH }}manifests.yaml tmp-manifests.yaml; then
+#             echo "### Stopping promotion: No diff found for ${{ env.APP_PATH }}manifests.yaml after build" >> "$GITHUB_STEP_SUMMARY" 
+#             exit 1
+#           else
+#             cp tmp-manifests.yaml ${{ env.APP_PATH }}manifests.yaml
+#             rm tmp-manifests.yaml
+#           fi
 
       - name: create pull request
         uses: peter-evans/create-pull-request@2b011faafdcbc9ceb11414d64d0573f37c774b04 # pin@v4.2.3
