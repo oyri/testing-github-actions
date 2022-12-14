@@ -5,7 +5,7 @@ on:
 
 jobs:
   pr-to-test:
-    uses: ./.github/workflows/promote-to-environment.yaml
+    uses: ./.github/workflows/promote-to-environment.yml
     with:
       application: 'maskinporten-oauth2-server-digdir-id-maskinporten-systest'
       revision: '98249b0ab59b5f5db58349819b29a32ed29bb6cb'
@@ -14,10 +14,10 @@ jobs:
       source-environment: ''
       environment: 'test'
     secrets:
-      ssh-key-promote-application: ${{ secrets.SSH_KEY_PROMOTE_APPLICATION }}
+      ssh-key-promote-application: ''
   pr-to-ver2:
     if: ${{'digdir-id-maskinporten' == 'digdir-id-maskinporten' && false}}
-    uses: ./.github/workflows/promote-to-environment.yaml
+    uses: ./.github/workflows/promote-to-environment.yml
     with:
       application: 'maskinporten-oauth2-server-digdir-id-maskinporten-systest'
       revision: '98249b0ab59b5f5db58349819b29a32ed29bb6cb'
@@ -26,4 +26,4 @@ jobs:
       source-environment: ''
       environment: 'ver2'
     secrets:
-      ssh-key-promote-application: ${{ secrets.SSH_KEY_PROMOTE_APPLICATION }}
+      ssh-key-promote-application: ''
