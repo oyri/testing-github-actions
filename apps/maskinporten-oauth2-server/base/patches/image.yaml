@@ -1,0 +1,3 @@
+- op: replace
+  path: /spec/template/spec/containers/1/image
+  value: creiddev.azurecr.io/maskinporten-oauth2-server:2022-12-12-0910-5cad5dd4@sha256:9835f16ee35bde0292c3bd59c615b23e37ea0499482f40cb856b60383d88f621
