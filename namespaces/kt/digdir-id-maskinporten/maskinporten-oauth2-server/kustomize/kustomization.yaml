@@ -1,0 +1,20 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+- git@github.com:oyri/testing-github-actions.git/apps/maskinporten-oauth2-server/base/?ref=26d750c15ff68c90fab251e0f21a7a7e664093b6
+
+namePrefix: maskinporten-oauth2-server-
+
+namespace: digdir-id-maskinporten
+
+patchesJson6902:
+
+
+replicas:
+- name: deployment
+  count: 1
+
+commonLabels:
+  app.kubernetes.io/name: maskinporten-oauth2-server
+  app.kubernetes.io/part-of: maskinporten
