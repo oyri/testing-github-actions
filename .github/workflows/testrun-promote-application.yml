@@ -1,0 +1,29 @@
+name: ArgoCD Systest Sync Success - PR to test/ver2
+
+on:
+  workflow_dispatch:
+
+jobs:
+  pr-to-test:
+    uses: ./.github/workflows/promote-to-environment.yaml
+    with:
+      application: 'maskinporten-oauth2-server-digdir-id-maskinporten-systest'
+      revision: '98249b0ab59b5f5db58349819b29a32ed29bb6cb'
+      namespace: 'digdir-id-maskinporten'
+      source-app-path: 'namespaces/systest/digdir-id-maskinporten/maskinporten-oauth2-server/'
+      source-environment: ''
+      environment: 'test'
+    secrets:
+      ssh-key-promote-application: ${{ secrets.SSH_KEY_PROMOTE_APPLICATION }}
+  pr-to-ver2:
+    if: ${{'digdir-id-maskinporten' == 'digdir-id-maskinporten' && false}}
+    uses: ./.github/workflows/promote-to-environment.yaml
+    with:
+      application: 'maskinporten-oauth2-server-digdir-id-maskinporten-systest'
+      revision: '98249b0ab59b5f5db58349819b29a32ed29bb6cb'
+      namespace: 'digdir-id-maskinporten'
+      source-app-path: 'namespaces/systest/digdir-id-maskinporten/maskinporten-oauth2-server/'
+      source-environment: ''
+      environment: 'ver2'
+    secrets:
+      ssh-key-promote-application: ${{ secrets.SSH_KEY_PROMOTE_APPLICATION }}
