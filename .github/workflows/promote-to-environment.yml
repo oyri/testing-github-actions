@@ -47,6 +47,9 @@ jobs:
       - name: Find APPLICATION-NAME
         run: |
           echo "APPLICATION-NAME=$(basename ${{ inputs.source-app-path }})" >> "$GITHUB_ENV"
+      - name: print repo name
+        run: |
+          echo "RAAAAA Application-name= ${{ github.event.repository.name }}"
       - name: Set target app path if test
         if: ${{ inputs.environment == 'test' }}
         run: |
