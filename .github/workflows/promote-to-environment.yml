@@ -36,6 +36,9 @@ on:
         description: SSH key for promote application
         required: true
 
+env:
+  NEW_APPLICATION_NAME: ${{ github.event.repository.name }}
+
 jobs:
   create-pr-to-env:
     runs-on: ubuntu-latest
@@ -49,7 +52,11 @@ jobs:
           echo "APPLICATION-NAME=$(basename ${{ inputs.source-app-path }})" >> "$GITHUB_ENV"
       - name: print repo name
         run: |
-          echo "RAAAAA Application-name= ${{ github.event.repository.name }}"
+         USER_INPUT=${{ inputs.source-image }}
+         # Use user input or fall back to "Octocat"
+          echo $USER_INPUT && echo "USER_INPUT"
+         NAME=${USER_INPUT:-${{ github.event.repository.name }}}
+         echo $NAME && echo "RAANDI"
       - name: Set target app path if test
         if: ${{ inputs.environment == 'test' }}
         run: |
