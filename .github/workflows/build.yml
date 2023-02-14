@@ -74,7 +74,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - run: "echo steps output header: ${{ toJson(steps.list_commits.outputs.headers) }}"
-     # - run: "echo steps output data: ${{ toJson(steps.list_commits.outputs.data) }}"
+      - run: "echo steps output data: ${{ toJson(steps.list_commits.outputs.data) }}"
       - run: "echo steps output sha: ${{ toJson(steps.list_commits.outputs.data)[0].sha }}"
       - name: Set version as env variable
         run: echo "VERSION=$(date +'%Y-%m-%d-%H%M')-${GITHUB_SHA::8}" >> $GITHUB_ENV
