@@ -31,7 +31,7 @@ jobs:
         id: regex-find-jira-id
         run: >-
            echo "::set-output name=JIRAID::$(
-            echo ${{ github.event.head_commit.message }} | 
+            echo '${{ github.event.head_commit.message }}' | 
             egrep -o '(^[a-zA-Z]{2,6}-[0-9]+)'
            )"
       - id: output-jira-id
