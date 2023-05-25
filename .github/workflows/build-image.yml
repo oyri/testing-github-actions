@@ -1,4 +1,4 @@
-name: Build/publish Docker image & update image version in config
+name: Has jira-id
 
 on:
   push:
@@ -24,3 +24,12 @@ jobs:
           min_length: 10 # Min length of the title
           max_length: 100 # Max length of the title
           github_token: ${{ github.token }} # Default: ${{ github.token }}
+      - name: Find jira-id
+        id: regex-find-jira-id
+        run: |
+             JIRAID=$(echo ${{ github.event.head_commit.message }} | egrep -o '(^[a-zA-Z]{2,6}-[0-9]+)')
+             echo "::set-output name=JIRAID::$JIRAID"
+      - id: output-jira-id
+        if: ${{ steps.regex-find-jira-id.outputs.JIRAID != '' }}
+        run: echo "JIRA_ID=${{ steps.regex-find-jira-id.outputs.group1 }}" >> "$GITHUB_ENV"
+        
