@@ -24,6 +24,9 @@ jobs:
           min_length: 10 # Min length of the title
           max_length: 100 # Max length of the title
           github_token: ${{ github.token }} # Default: ${{ github.token }}
+  find-jira-id:
+    runs-on: ubuntu-latest
+    steps:
       - name: Find jira-id
         id: regex-find-jira-id
         run: |
