@@ -33,8 +33,8 @@ jobs:
             echo "starting...."
             JIID=$(echo '${{ github.event.head_commit.message }}' | 
             sed -E 's/^([a-zA-Z]{2,6}\-[0-9]+).+/\1/')
-            echo "$JIID"
-            echo "JIRAID=$(JIID)" >> "$GITHUB_OUTPUT"
+            echo "jid: $JIID"
+            echo "JIRAID=$JIID" >> "$GITHUB_OUTPUT"
       - id: output-jira-id
         if: ${{ steps.regex-find-jira-id.outputs.JIRAID != '' }}
         run: echo "JIRA_ID=${{ steps.regex-find-jira-id.outputs.group1 }}" >> "$GITHUB_ENV"
