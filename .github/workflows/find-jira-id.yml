@@ -33,7 +33,7 @@ jobs:
        #   GIT_MSG: ${{ github.event.head_commit.message }}
         run: |
             echo "starting...."
-            JIID=$(echo "${{ github.event.head_commit.message }}" | 
+            JIID=$(echo -n "${{ github.event.head_commit.message }}" | 
             sed -E 's/^([a-zA-Z]{2,6}\-[0-9]+).+/\1/')
             echo "jid: $JIID"
             echo "JIRAID=$JIID" >> "$GITHUB_OUTPUT"
