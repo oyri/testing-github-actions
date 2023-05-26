@@ -13,7 +13,7 @@ jobs:
           GITHUB_CONTEXT: ${{ toJSON(github) }}
         run: echo "$GITHUB_CONTEXT"
   verify-pull-request-title:
-   # if: ${{ github.event_name == 'pull_request'}}
+    if: ${{ github.event_name == 'pull_request'}}
     runs-on: ubuntu-latest
     steps:
       - uses: deepakputhraya/action-pr-title@v1.0.2
@@ -29,11 +29,11 @@ jobs:
     steps:
       - name: Find jira-id
         id: regex-find-jira-id
-        env:
-          GIT_MSG: ${{ github.event.head_commit.message }}
+       # env:
+       #   GIT_MSG: ${{ github.event.head_commit.message }}
         run: |
             echo "starting...."
-            JIID=$(echo "$GIT_MSG" | 
+            JIID=$(echo "${{ github.event.head_commit.message }}" | 
             sed -E 's/^([a-zA-Z]{2,6}\-[0-9]+).+/\1/')
             echo "jid: $JIID"
             echo "JIRAID=$JIID" >> "$GITHUB_OUTPUT"
