@@ -29,11 +29,11 @@ jobs:
     steps:
       - name: Find jira-id
         id: regex-find-jira-id
-       # env:
-       #   GIT_MSG: ${{ github.event.head_commit.message }}
+        env:
+          GIT_MSG: ${{ github.event.head_commit.message }}
         run: |
             echo "starting...."
-            JIID=$(echo "${{ github.event.head_commit.message }}" | head -1 | 
+            JIID=$(echo "$GIT_MSG" | head -1 | 
             sed -E 's/^([a-zA-Z]{2,6}\-[0-9]+).+/\1/')
             echo "jid: $JIID"
             echo "JIRAID=$JIID" >> "$GITHUB_OUTPUT"
