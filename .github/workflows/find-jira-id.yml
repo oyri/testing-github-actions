@@ -2,7 +2,6 @@ name: Has jira-id
 
 on:
   push:
-    branches: [ main ]
 
 jobs:
   dumpcontext:
